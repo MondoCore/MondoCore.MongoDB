@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solutions Items", "Solutions Items", "{4679E56C-DD94-4919-8F96-B302DAAA1450}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EC846BF0-56D8-46B3-A60C-782AB5A614B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MondoCore.MongoDB", "MondoCore.MongoDB\MondoCore.MongoDB.csproj", "{1E6013DE-F6AA-4D32-9B92-64D049EDF96B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MondoCore.MongoDB.FunctionalTests", "Tests\MondoCore.MongoDB.FunctionalTests\MondoCore.MongoDB.FunctionalTests.csproj", "{2E4F0AC0-13C2-4385-A388-A76003B8AFE1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1E6013DE-F6AA-4D32-9B92-64D049EDF96B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E6013DE-F6AA-4D32-9B92-64D049EDF96B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E6013DE-F6AA-4D32-9B92-64D049EDF96B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E6013DE-F6AA-4D32-9B92-64D049EDF96B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E4F0AC0-13C2-4385-A388-A76003B8AFE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E4F0AC0-13C2-4385-A388-A76003B8AFE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E4F0AC0-13C2-4385-A388-A76003B8AFE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E4F0AC0-13C2-4385-A388-A76003B8AFE1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2E4F0AC0-13C2-4385-A388-A76003B8AFE1} = {EC846BF0-56D8-46B3-A60C-782AB5A614B8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {90F589D7-EF55-4D08-9FE5-3A4E69C2A624}
+	EndGlobalSection
+EndGlobal
