@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
 
 using MondoCore.Common;
 
@@ -30,5 +32,21 @@ namespace MondoCore.TestHelpers
         public string KeyVaultTenantId          { get; set; }
         public string KeyVaultClientId          { get; set; }
         public string KeyVaultClientSecret      { get; set; }     
+    }
+
+    public static class Extensions
+    { 
+        /****************************************************************************/
+        public static async Task<IList<T>> ToList<T>(this IAsyncEnumerable<T> list)
+        {
+            var result = new List<T>();
+
+            await foreach(var item in list)
+            {
+                result.Add(item);
+            }
+            
+            return result;
+        }
     }
 }
