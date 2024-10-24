@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using MongoDB = MondoCore.MongoDB;
 
-using MondoCore.Common;
+using MondoCore.TestHelpers;
 using MondoCore.Data;
 
 using MongoDB.Bson;
@@ -31,13 +31,13 @@ namespace MondoCore.MongoDB.FunctionalTests
         }
 
         [TestInitialize]
-        public async Task MongoCollection_Initialize()
+        public void MongoCollection_Initialize()
         {
            // await _writer.Delete( _=> true );
         }
 
         [TestCleanup]
-        public async Task MongoCollection_Cleanup()
+        public void MongoCollection_Cleanup()
         {
            // await _writer.Delete( _=> true );
         }

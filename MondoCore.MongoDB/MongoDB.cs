@@ -10,19 +10,16 @@
  *  Original Author: Jim Lightfoot                                         
  *    Creation Date: 28 Feb 2021                                           
  *                                                                          
- *   Copyright (c) 2021 - Jim Lightfoot, All rights reserved                
+ *   Copyright (c) 2021 - 2024 - Jim Lightfoot, All rights reserved                
  *                                                                          
  *  Licensed under the MIT license:                                         
  *    http://www.opensource.org/licenses/mit-license.php                    
  *                                                                          
  ****************************************************************************/
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 
 using MondoCore.Data;
@@ -35,6 +32,11 @@ namespace MondoCore.MongoDB
     public class MongoDB : IDatabase
     {
         protected readonly IMongoDatabase _db;
+
+        static MongoDB()
+        {
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+        }
 
         public MongoDB(string dbName, string connectionString)
         {
@@ -51,7 +53,7 @@ namespace MondoCore.MongoDB
         /// <param name="repoName">Name of MongoDB collection</param>
         /// <returns>A reader to make read operations</returns>
         public IReadRepository<TID, TValue> GetRepositoryReader<TID, TValue>(string repoName, IIdentifierStrategy<TID> strategy = null) where TValue : IIdentifiable<TID>
-        {
+    {
             var mongoCollection = _db.GetCollection<TValue>(repoName);
 
             return new MongoCollectionReader<TID, TValue>(mongoCollection);
@@ -63,7 +65,7 @@ namespace MondoCore.MongoDB
         /// <typeparam name="TID">Type of the identifier</typeparam>
         /// <typeparam name="TValue">Type of the value stored in the collection</typeparam>
         /// <param name="repoName">Name of MongoDB collection</param>
-        /// <returns>A writer to make writer operations</returns>
+        /// <returns>A writer to make write operations</returns>
         public IWriteRepository<TID, TValue> GetRepositoryWriter<TID, TValue>(string repoName, IIdentifierStrategy<TID> strategy = null) where TValue : IIdentifiable<TID>
         {
             var mongoCollection = _db.GetCollection<TValue>(repoName);

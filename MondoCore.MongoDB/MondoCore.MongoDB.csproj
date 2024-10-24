@@ -2,11 +2,35 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <RepositoryUrl>https://github.com/jim-lightfoot/MondoCore-MongoDB</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <Authors>Jim Lightfoot</Authors>
+    <Description>Implementation od MondoCode.Data interfaces for MongoDB</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>2.0.0</Version>
+    <Company>MondoCore</Company>
+    <Product>MondoCore.MongoDB</Product>
+    <Copyright>© Jim Lightfoot, All Rights Reserved</Copyright>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageTags>mondocore;database;repository;mongodb</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MondoCore.Data" Version="1.0.0" />
-    <PackageReference Include="MongoDB.Driver" Version="2.11.6" />
+    <PackageReference Include="MondoCore.Collections" Version="2.1.0" />
+    <PackageReference Include="MondoCore.Data" Version="2.0.0" />
+    <PackageReference Include="MongoDB.Driver" Version="3.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
 </Project>
