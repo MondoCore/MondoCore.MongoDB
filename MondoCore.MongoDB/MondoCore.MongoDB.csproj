@@ -8,7 +8,7 @@
     <Authors>Jim Lightfoot</Authors>
     <Description>Implementation of MondoCode.Data interfaces for MongoDB</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>2.0.0</Version>
+    <Version>2.1.0</Version>
     <Company>MondoCore</Company>
     <Product>MondoCore.MongoDB</Product>
     <Copyright>© Jim Lightfoot, All Rights Reserved</Copyright>
