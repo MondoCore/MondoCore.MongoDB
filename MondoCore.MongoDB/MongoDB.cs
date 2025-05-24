@@ -70,7 +70,7 @@ namespace MondoCore.MongoDB
         {
             var mongoCollection = _db.GetCollection<TValue>(repoName);
 
-            return new MongoCollectionWriter<TID, TValue>(mongoCollection);
+            return new MongoCollectionWriter<TID, TValue>(mongoCollection, new MongoCollectionReader<TID, TValue>(mongoCollection));
         }
     }
 }

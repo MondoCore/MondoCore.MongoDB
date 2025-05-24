@@ -10,7 +10,7 @@
  *  Original Author: Jim Lightfoot                                         
  *    Creation Date: 28 Feb 2021                                           
  *                                                                          
- *   Copyright (c) 2021-2024 - Jim Lightfoot, All rights reserved                
+ *   Copyright (c) 2021-2025 - Jim Lightfoot, All rights reserved                
  *                                                                          
  *  Licensed under the MIT license:                                         
  *    http://www.opensource.org/licenses/mit-license.php                    
@@ -21,6 +21,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 using MongoDB.Driver;
@@ -33,10 +34,13 @@ namespace MondoCore.MongoDB
     internal class MongoCollectionWriter<TID, TValue> : IWriteRepository<TID, TValue> where TValue : IIdentifiable<TID>
     {
         private readonly IMongoCollection<TValue> _collection;
+        private readonly IReadRepository<TID, TValue> _readRepo;
 
-        internal MongoCollectionWriter(IMongoCollection<TValue> collection)
+        internal MongoCollectionWriter(IMongoCollection<TValue> collection, IReadRepository<TID, TValue> readRepo)
         {
-            _collection = collection;
+           _collection = collection;
+           _readRepo = readRepo;
+
         }
 
         #region IWriteRepository
@@ -110,6 +114,31 @@ namespace MondoCore.MongoDB
             var result = await _collection.UpdateManyAsync(filter, updateDef);
 
             return result.ModifiedCount;
+        }
+
+        public async Task<long> Update(Func<TValue, Task<(bool Update, bool Continue)>> update, Expression<Func<TValue, bool>> query)
+        {
+            var result = _readRepo.Get(query); 
+            var count  = 0L;
+            
+            await Parallel.ForEachAsync(result, async (val, token)=>
+            {
+                try
+                { 
+                    var result = await update(val);
+
+                    if(result.Update)
+                    { 
+                        await this.Update(val);
+                        Interlocked.Increment(ref count);
+                    }
+                }
+                catch
+                {
+                }
+            });
+
+            return count;
         }
 
         #endregion
