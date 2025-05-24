@@ -1,14 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using MongoDB = MondoCore.MongoDB;
-
-using MondoCore.Common;
-using MondoCore.Data;
 using MondoCore.Repository.TestHelper;
 using MondoCore.TestHelpers;
 
