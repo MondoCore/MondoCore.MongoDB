@@ -21,11 +21,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 using MongoDB.Driver;
 
 using MondoCore.Data;
+using System.Runtime.CompilerServices;
 
 namespace MondoCore.MongoDB
 {
@@ -38,17 +40,17 @@ namespace MondoCore.MongoDB
             _collection = collection;
         }
 
-        public async Task<long> Count(Expression<Func<TValue, bool>> query = null)
+        public async Task<long> Count(Expression<Func<TValue, bool>> query = null, CancellationToken cancellationToken = default)
         {
             if(query == null)
-                return await _collection.EstimatedDocumentCountAsync();
+                return await _collection.EstimatedDocumentCountAsync(cancellationToken: cancellationToken);
 
-            return await _collection.CountDocumentsAsync(query);
+            return await _collection.CountDocumentsAsync(query, cancellationToken: cancellationToken);
         }
 
         #region IReadRepository
 
-        public async Task<TValue> Get(TID id)
+        public async Task<TValue> Get(TID id, CancellationToken cancellationToken = default)
         {
             var filter = Builders<TValue>.Filter.Eq( item=> item.Id, id );
 
@@ -60,11 +62,11 @@ namespace MondoCore.MongoDB
             return result;
         }
 
-        public async IAsyncEnumerable<TValue> Get(IEnumerable<TID> ids)
+        public async IAsyncEnumerable<TValue> Get(IEnumerable<TID> ids, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             var filter = Builders<TValue>.Filter.In( item=> item.Id, ids);
             
-            using(var cursor = await _collection.FindAsync(filter))
+            using(var cursor = await _collection.FindAsync(filter, cancellationToken: cancellationToken))
             {
                 while(await cursor.MoveNextAsync())
                 {
@@ -72,24 +74,30 @@ namespace MondoCore.MongoDB
 
                     foreach(var document in batch)
                     {
+                        if(cancellationToken.IsCancellationRequested)   
+                            yield break;
+
                         yield return document;
                     }
                 }
             }
         }
 
-        public async IAsyncEnumerable<TValue> Get(Expression<Func<TValue, bool>> query)
+        public async IAsyncEnumerable<TValue> Get(Expression<Func<TValue, bool>> query, [EnumeratorCancellation] CancellationToken cancellationToken = default)
         {
             var filter = Builders<TValue>.Filter.Where(query);
             
-            using(var cursor = await _collection.FindAsync(filter))
+            using(var cursor = await _collection.FindAsync(filter, cancellationToken: cancellationToken))
             {
-                while(await cursor.MoveNextAsync())
+                while(await cursor.MoveNextAsync(cancellationToken))
                 {
                     var batch = cursor.Current;
 
                     foreach(var document in batch)
                     {
+                        if(cancellationToken.IsCancellationRequested)   
+                            yield break;
+
                         yield return document;
                     }
                 }

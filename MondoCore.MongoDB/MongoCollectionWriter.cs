@@ -45,42 +45,42 @@ namespace MondoCore.MongoDB
 
         #region IWriteRepository
 
-        public async Task<bool> Delete(TID id)
+        public async Task<bool> Delete(TID id, CancellationToken cancellationToken = default)
         {
             var filter = Builders<TValue>.Filter.Eq(item => item.Id, id);
-            var result = await _collection.DeleteOneAsync(filter);
+            var result = await _collection.DeleteOneAsync(filter, cancellationToken);
 
             return result.DeletedCount == 1;
         }
 
-        public async Task<long> Delete(Expression<Func<TValue, bool>> guard)
+        public async Task<long> Delete(Expression<Func<TValue, bool>> guard, CancellationToken cancellationToken = default)
         {
             var filter = Builders<TValue>.Filter.Where(guard);
-            var result = await _collection.DeleteManyAsync(filter);
+            var result = await _collection.DeleteManyAsync(filter, cancellationToken);
 
             return result.DeletedCount;
         }
 
-        public async Task<TValue> Insert(TValue item)
+        public async Task<TValue> Insert(TValue item, CancellationToken cancellationToken = default)
         {
             if(item.Id.Equals(default(TID)))
                 throw new ArgumentException("Item must have a valid id in order to add to collection");
 
             var options = new InsertOneOptions { BypassDocumentValidation = true };
 
-            await _collection.InsertOneAsync(item, options);
+            await _collection.InsertOneAsync(item, options, cancellationToken);
 
             return item;
         }
 
-        public Task Insert(IEnumerable<TValue> items)
+        public Task Insert(IEnumerable<TValue> items, CancellationToken cancellationToken = default)
         {
             var options = new InsertManyOptions { BypassDocumentValidation = true };
 
-            return _collection.InsertManyAsync(items, options);
+            return _collection.InsertManyAsync(items, options, cancellationToken);
         }
 
-        public async Task<bool> Update(TValue item, Expression<Func<TValue, bool>> guard = null)
+        public async Task<bool> Update(TValue item, Expression<Func<TValue, bool>> guard = null, CancellationToken cancellationToken = default)
         {
             var id     = item.Id;
             var filter = Builders<TValue>.Filter.Eq(obj => obj.Id, id);
@@ -88,12 +88,12 @@ namespace MondoCore.MongoDB
             if(guard != null)
                 filter =  Builders<TValue>.Filter.And(filter, Builders<TValue>.Filter.Where(guard));
 
-            var result = await _collection.ReplaceOneAsync(filter, item);
+            var result = await _collection.ReplaceOneAsync(filter, item, cancellationToken: cancellationToken);
 
             return result.ModifiedCount > 0;
         }
 
-        public async Task<long> Update(object properties, Expression<Func<TValue, bool>> query)
+        public async Task<long> Update(object properties, Expression<Func<TValue, bool>> query, CancellationToken cancellationToken = default)
         {
             var props    = properties.ToDictionary().ToList();
             var numProps = props.Count;
@@ -111,12 +111,12 @@ namespace MondoCore.MongoDB
             }
 
             var filter = Builders<TValue>.Filter.Where(query);
-            var result = await _collection.UpdateManyAsync(filter, updateDef);
+            var result = await _collection.UpdateManyAsync(filter, updateDef, cancellationToken: cancellationToken);
 
             return result.ModifiedCount;
         }
 
-        public async Task<long> Update(Func<TValue, Task<(bool Update, bool Continue)>> update, Expression<Func<TValue, bool>> query)
+        public async Task<long> Update(Func<TValue, Task<(bool Update, bool Continue)>> update, Expression<Func<TValue, bool>> query, CancellationToken cancellationToken = default)
         {
             var result = _readRepo.Get(query); 
             var count  = 0L;
@@ -129,7 +129,7 @@ namespace MondoCore.MongoDB
 
                     if(result.Update)
                     { 
-                        await this.Update(val);
+                        await this.Update(val, cancellationToken: cancellationToken);
                         Interlocked.Increment(ref count);
                     }
                 }

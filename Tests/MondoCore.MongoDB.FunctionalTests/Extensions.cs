@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using MongoDB = MondoCore.MongoDB;
@@ -41,49 +42,17 @@ namespace MondoCore.MongoDB.FunctionalTests
         }
 
         [TestMethod]
-        public async Task MongoCollection_1000()
+        [DataRow(1000)]
+        [DataRow(10000)]
+        [DataRow(100000)]
+        [DataRow(1000000)]
+        public async Task MongoCollection_Get(int numItems)
         {
-            await CreateLargeDatabase(1000);
+            await CreateLargeDatabase(numItems);
 
-            Assert.AreEqual(1000, _reader.Count());
+            Assert.AreEqual(numItems, _reader.Count());
 
-            var result = await _reader.Get( i=> i.Surname == "Brown").ToList();
-
-            Assert.AreNotEqual(0, result.Count());
-        }
-
-        [TestMethod]
-        public async Task MongoCollection_10000()
-        {
-            await CreateLargeDatabase(10000);
-
-            Assert.AreEqual(10000, _reader.Count());
-
-            var result = await _reader.Get( i=> i.Surname == "Brown").ToList();
-
-            Assert.AreNotEqual(0, result.Count());
-        }
-
-        [TestMethod]
-        public async Task MongoCollection_100000()
-        {
-            await CreateLargeDatabase(100000);
-
-            Assert.AreEqual(100000, _reader.Count());
-
-            var result = await _reader.Get( i=> i.Surname == "Brown").ToList();
-
-            Assert.AreNotEqual(0, result.Count());
-        }
-
-        [TestMethod]
-        public async Task MongoCollection_1000000()
-        {
-            await CreateLargeDatabase(1000000);
-
-            Assert.AreEqual(1000000, _reader.Count());
-
-            var result = await _reader.Get( i=> i.Surname == "Brown").ToList();
+            var result = await _reader.Get( i=> i.Surname == "Brown", CancellationToken.None).ToList();
 
             Assert.AreNotEqual(0, result.Count());
         }
