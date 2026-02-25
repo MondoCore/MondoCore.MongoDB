@@ -31,7 +31,7 @@ using MondoCore.Data;
 
 namespace MondoCore.MongoDB
 {
-    internal class MongoCollectionWriter<TID, TValue> : IWriteRepository<TID, TValue> where TValue : IIdentifiable<TID>
+    internal class MongoCollectionWriter<TID, TValue> : IWriteRepository<TID, TValue> where TValue : IIdentifiable<TID>, new()
     {
         private readonly IMongoCollection<TValue> _collection;
         private readonly IReadRepository<TID, TValue> _readRepo;

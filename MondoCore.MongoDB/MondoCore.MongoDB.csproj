@@ -8,12 +8,13 @@
     <Authors>Jim Lightfoot</Authors>
     <Description>Implementation of MondoCode.Data interfaces for MongoDB</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>3.0.1</Version>
+    <Version>3.1.0</Version>
     <Company>MondoCore</Company>
     <Product>MondoCore.MongoDB</Product>
     <Copyright>© Jim Lightfoot, All Rights Reserved</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageTags>mondocore;database;repository;mongodb</PackageTags>
+    <PackageProjectUrl>https://github.com/MondoCore</PackageProjectUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,7 +30,7 @@
 
   <ItemGroup>
     <PackageReference Include="MondoCore.Collections" Version="2.5.1" />
-    <PackageReference Include="MondoCore.Data" Version="2.5.1" />
+    <PackageReference Include="MondoCore.Data" Version="3.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="3.6.0" />
   </ItemGroup>
 
