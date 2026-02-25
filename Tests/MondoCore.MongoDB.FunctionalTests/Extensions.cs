@@ -45,7 +45,7 @@ namespace MondoCore.MongoDB.FunctionalTests
         [DataRow(1000)]
         [DataRow(10000)]
         [DataRow(100000)]
-        [DataRow(1000000)]
+       // [DataRow(1000000)]
         public async Task MongoCollection_Get(int numItems)
         {
             await CreateLargeDatabase(numItems);

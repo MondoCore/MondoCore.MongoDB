@@ -31,7 +31,7 @@ using System.Runtime.CompilerServices;
 
 namespace MondoCore.MongoDB
 {
-    internal class MongoCollectionReader<TID, TValue> : IReadRepository<TID, TValue> where TValue : IIdentifiable<TID> 
+    internal class MongoCollectionReader<TID, TValue> : IReadRepository<TID, TValue> where TValue : IIdentifiable<TID>, new()
     {
         private readonly IMongoCollection<TValue> _collection;
 

@@ -52,7 +52,7 @@ namespace MondoCore.MongoDB
         /// <typeparam name="TValue">Type of the value stored in the collection</typeparam>
         /// <param name="repoName">Name of MongoDB collection</param>
         /// <returns>A reader to make read operations</returns>
-        public IReadRepository<TID, TValue> GetRepositoryReader<TID, TValue>(string repoName, IIdentifierStrategy<TID> strategy = null) where TValue : IIdentifiable<TID>
+        public IReadRepository<TID, TValue> GetRepositoryReader<TID, TValue>(string repoName, IIdentifierStrategy<TID> strategy = null) where TValue : IIdentifiable<TID>, new()
     {
             var mongoCollection = _db.GetCollection<TValue>(repoName);
 
@@ -66,7 +66,7 @@ namespace MondoCore.MongoDB
         /// <typeparam name="TValue">Type of the value stored in the collection</typeparam>
         /// <param name="repoName">Name of MongoDB collection</param>
         /// <returns>A writer to make write operations</returns>
-        public IWriteRepository<TID, TValue> GetRepositoryWriter<TID, TValue>(string repoName, IIdentifierStrategy<TID> strategy = null) where TValue : IIdentifiable<TID>
+        public IWriteRepository<TID, TValue> GetRepositoryWriter<TID, TValue>(string repoName, IIdentifierStrategy<TID> strategy = null) where TValue : IIdentifiable<TID>, new()
         {
             var mongoCollection = _db.GetCollection<TValue>(repoName);
 
